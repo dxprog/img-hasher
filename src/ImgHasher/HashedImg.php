@@ -22,6 +22,10 @@ namespace ImgHasher {
         // The cached dHash value
         private $_dHash = null;
 
+        /**
+         * Constructor
+         * @param resource $img GD2 image resource to compute hashes for
+         */
         public function __construct($img) {
             $this->_validateImage($img);
             $this->_img = $img;
@@ -32,7 +36,7 @@ namespace ImgHasher {
         }
 
         /**
-         * Returns the distance hash of the image
+         * Returns the dHash of the image
          * @return int The image hash
          */
         public function dHash() {
@@ -90,13 +94,15 @@ namespace ImgHasher {
                 $dHash = $tempHash->dHash();
                 unset($tempHash);
             } else {
-                throw new Exception('Invalid image parameter passed to dHashCompare');
+                throw new Exception('Invalid image or hash');
             }
             return $this->_calculateHammingDistance($this->dHash(), $dHash);
         }
 
         /**
          * Given an RGB color, calculates it's luminence value
+         * @param int $color The 32-bit color
+         * @return float The luminence value of the color
          */
         private function _calculateLuminence($color) {
             $r = ($color >> 16) / RGB_MAX;
@@ -105,6 +111,13 @@ namespace ImgHasher {
             return 0.2126 * $r + 0.7152 * $g + 0.0722 * $b;
         }
 
+        /**
+         * Calculates the Hamming distance between two numbers:
+         *   http://en.wikipedia.org/wiki/Hamming_distance
+         * @param int $hash1 The first image hash
+         * @param int $hash2 The second image hash
+         * @return int The distance between the two numbers
+         */
         private function _calculateHammingDistance($hash1, $hash2) {
             $retVal = 0;
             for ($i = 0, $count = PHP_INT_SIZE * 8; $i < $count; $i++) {
@@ -113,6 +126,11 @@ namespace ImgHasher {
             return $retVal;
         }
 
+        /**
+         * Ensures that $img is a valid GD2 resource
+         * @param resource $img The value to check
+         * @return boolean Returns true or throws an error if the resource is invalid
+         */
         private function _validateImage($img) {
             if (!$img || false === imagesx($img)) {
                 throw new Exception('Invalid image');
