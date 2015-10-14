@@ -9,6 +9,8 @@
 
 namespace ImgHasher {
 
+    use Exception;
+
     const RGB_MAX = 255;
 
     // Image scaling dimensions for dHash
