@@ -55,7 +55,7 @@ namespace ImgHasher {
 
             // The original image is resampled down to 9x8.
             // We'll build our bit hash from this
-            $tempImg = imagecreatetruecolor(9, 8);
+            $tempImg = imagecreatetruecolor(DHASH_WIDTH, DHASH_HEIGHT);
             imagecopyresampled($tempImg, $img, 0, 0, 0, 0, DHASH_WIDTH, DHASH_HEIGHT, imagesx($img), imagesy($img));
 
             $retVal = 0;
