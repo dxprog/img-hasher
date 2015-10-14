@@ -14,5 +14,8 @@
         "psr-0": {
             "ImgHasher": "src/"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.0"
     }
 }
